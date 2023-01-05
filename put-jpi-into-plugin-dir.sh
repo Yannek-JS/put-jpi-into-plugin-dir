@@ -39,7 +39,7 @@ fi
 function check_exit_code() {
     # Parameters:
     #   $1 - exit code
-    if [ $1 -ne 0 ]; then echo 'Error. See the log file'; else echo 'OK'; fi
+    if [ $1 -ne 0 ]; then echo 'ERROR'; else echo 'OK'; fi
 }
 
 
@@ -58,47 +58,47 @@ do
             | gawk --field-separator '.hpi' '{print $1}')
     echo '----------------------------------------------------------------------' | tee --append "${LOG_FILE}"
     echo "  Processing $plugin plugin" | tee --append "${LOG_FILE}"
-    if [ -f "${DST_DIR}/${$plugin}.jpi" ]
+    if [ -f "${DST_DIR}/${plugin}.jpi" ]
     then
-        echo -e -n "Backing up ${DST_DIR}/${plugin}.jpi plugin -> ${DST_DIR}/${plugin}.jpi${BKP_EXT} ..... " \
+        echo -e -n "Backing up ${DST_DIR}/${plugin}.jpi plugin file -> ${DST_DIR}/${plugin}.jpi${BKP_EXT} ..... " \
             | tee --append "${LOG_FILE}"
         echo  >> "${LOG_FILE}"
         mv --verbose "${DST_DIR}/${plugin}.jpi" "${DST_DIR}/${plugin}.jpi${BKP_EXT}" >> "${LOG_FILE}" 2>&1
         if [ $? -eq 0 ]
         then
             echo 'OK' | tee --append "${LOG_FILE}"
-            echo -e -n "Putting new ${plugin} plugin version from ${SRC_DIR} into ${DST_DIR} ..... " \
+            echo -e -n "Putting ${plugin}.jpi plugin file from ${SRC_DIR} into ${DST_DIR} ..... " \
                 | tee --append "${LOG_FILE}"
             echo  >> "${LOG_FILE}"
-            cp --verbose "${SRC_DIR}/${plugin}" "${DST_DIR}/" >> "${LOG_FILE}" 2>&1
+            cp --verbose "${SRC_DIR}/${plugin}.hpi" "${DST_DIR}/${plugin}.jpi" >> "${LOG_FILE}" 2>&1
             echo $(check_exit_code $?) | tee --append "${LOG_FILE}"
         else
-            echo 'Error. See the log file' | tee --append "${LOG_FILE}"
+            echo 'ERROR' | tee --append "${LOG_FILE}"
         fi
-    elif [ -f "${DST_DIR}/${plugin}.disabled" ]
+    elif [ -f "${DST_DIR}/${plugin}.jpi.disabled" ]
     then
         echo "INFO! Plugin ${plugin} has been disabled." | tee --append $LOG_FILE
-        echo -e -n "Backing up ${DST_DIR}/${plugin}.disabled plugin -> ${DST_DIR}/${plugin}.disabled${BKP_EXT} ..... " \
+        echo -e -n "Backing up ${DST_DIR}/${plugin}.jpi.disabled plugin file -> ${DST_DIR}/${plugin}.jpi.disabled${BKP_EXT} ..... " \
             | tee --append "${LOG_FILE}"
         echo  >> "${LOG_FILE}"
-        mv --verbose "${DST_DIR}/${plugin}.disabled" "${DST_DIR}/${plugin}.disabled${BKP_EXT}" >> "${LOG_FILE}" 2>&1
+        mv --verbose "${DST_DIR}/${plugin}.jpi.disabled" "${DST_DIR}/${plugin}.jpi.disabled${BKP_EXT}" >> "${LOG_FILE}" 2>&1
         if [ $? -eq 0 ]
         then  
             echo 'OK' | tee --append "${LOG_FILE}"
-            echo -e -n "Putting new ${plugin} plugin version disabled from ${SRC_DIR} into ${DST_DIR} ..... " \
+            echo -e -n "Putting ${plugin}.jpi.disabled plugin file from ${SRC_DIR} into ${DST_DIR} ..... " \
                 | tee --append $LOG_FILE
             echo  >> "${LOG_FILE}"
-            cp --verbose "${SRC_DIR}/${plugin}" "${DST_DIR}/${plugin}.disabled" >> "${LOG_FILE}" 2>&1
+            cp --verbose "${SRC_DIR}/${plugin}.hpi.disabled" "${DST_DIR}/${plugin}.jpi.disabled" >> "${LOG_FILE}" 2>&1
             echo $(check_exit_code $?) | tee --append "${LOG_FILE}"
         else
-            echo 'Error. See the log file' | tee --append "${LOG_FILE}"
+            echo 'ERROR' | tee --append "${LOG_FILE}"
         fi
     else
         echo "INFO! No previous  ${plugin} plugin version in ${DST_DIR}." | tee --append $LOG_FILE
-        echo -e -n "Putting new ${plugin} plugin version from ${SRC_DIR} into ${DST_DIR} ..... " \
+        echo -e -n "Putting ${plugin}.jpi plugin file from ${SRC_DIR} into ${DST_DIR} ..... " \
             | tee --append "${LOG_FILE}"
         echo  >> "${LOG_FILE}"
-        cp --verbose "${SRC_DIR}/${plugin}" "${DST_DIR}/" >> "${LOG_FILE}" 2>&1
+        cp --verbose "${SRC_DIR}/${plugin}.hpi" "${DST_DIR}/${plugin}.jpi" >> "${LOG_FILE}" 2>&1
         echo $(check_exit_code $?) | tee --append "${LOG_FILE}"
     fi
     echo | tee --append "${LOG_FILE}"
