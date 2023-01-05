@@ -48,8 +48,8 @@ yes_or_not
 
 if ! [ -d ${SRC_DIR} ] || ! [ -d ${DST_DIR} ]
 then
-    echo -e "\nProblem ! Some of following directories do not exist are missing: \n  ${SRC_DIR} \n  ${DST_DIR} \n"
-    exit
+    echo -e "\nProblem ! Some of following directories do not exist: \n  ${SRC_DIR} \n  ${DST_DIR} \n"
+    quit_now
 fi
 
 find $SRC_DIR -type f -iname '*.hpi' | while read jpi_full_path
