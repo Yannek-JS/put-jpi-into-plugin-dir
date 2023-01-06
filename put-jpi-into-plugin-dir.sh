@@ -88,7 +88,7 @@ do
             echo -e -n "Putting ${plugin}.jpi.disabled plugin file from ${SRC_DIR} into ${DST_DIR} ..... " \
                 | tee --append $LOG_FILE
             echo  >> "${LOG_FILE}"
-            cp --verbose "${SRC_DIR}/${plugin}.hpi.disabled" "${DST_DIR}/${plugin}.jpi.disabled" >> "${LOG_FILE}" 2>&1
+            cp --verbose "${SRC_DIR}/${plugin}.hpi" "${DST_DIR}/${plugin}.jpi.disabled" >> "${LOG_FILE}" 2>&1
             echo $(check_exit_code $?) | tee --append "${LOG_FILE}"
         else
             echo 'ERROR' | tee --append "${LOG_FILE}"
